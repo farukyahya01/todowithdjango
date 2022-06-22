@@ -1,7 +1,25 @@
 from rest_framework import serializers
 from todo.models import TodoList
 
-class TodoListSerializers(serializers.Serializer):
+from datetime import datetime 
+from django.utils.timesince import timesince
+
+#THIS IS MODEL SERIALIZERS
+class TodoListSerializers(serializers.ModelSerializer):
+    time_since_pub = serializers.SerializerMethodField()
+    class Meta:
+        model = TodoList
+        fields = '__all__'
+        read_only_fields = ['id' , 'created_at', 'updated_at']
+
+    def get_time_since_pub(self, object):
+        now = datetime.now().astimezone()
+        pub_date = object.created_at
+        time_delta = timesince(pub_date, now)
+        return time_delta
+
+## THIS IS DEFAULT SERIALIZERS
+class TodoListDefaultSerializers(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     #user = serializers.ForeignKey()
     title = serializers.CharField()

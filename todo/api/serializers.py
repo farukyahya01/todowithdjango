@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from todo.models import TodoList
+from django.contrib.auth.models import User
 
 from datetime import datetime 
 from django.utils.timesince import timesince
@@ -17,6 +18,21 @@ class TodoListSerializers(serializers.ModelSerializer):
         pub_date = object.created_at
         time_delta = timesince(pub_date, now)
         return time_delta
+
+
+class UserSerializers(serializers.ModelSerializer):
+    # todolist = TodoListSerializers(many=True, read_only = True)
+    todolist = serializers.HyperlinkedRelatedField(
+        many = True,
+        read_only = True,
+        view_name='todolist_detail',
+    )
+    class Meta:
+        model = User
+        # fields = '__all__'
+        exclude = ['password', 'groups', 'user_permissions', 'is_superuser', 'date_joined', 'is_staff']
+        read_only_fields = ['id']
+
 
 ## THIS IS DEFAULT SERIALIZERS
 class TodoListDefaultSerializers(serializers.Serializer):

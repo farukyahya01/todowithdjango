@@ -10,7 +10,7 @@ class TodoList(models.Model):
         done = 'done',
         passive = 'passive',
     
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='todolist')
     title = models.CharField(max_length=255)
     description = models.TextField()
     status = models.CharField(max_length=15, choices=StatusChoices.choices, default=StatusChoices.active)

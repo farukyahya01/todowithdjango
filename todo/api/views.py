@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import get_object_or_404
 from todo.models import TodoList
-from todo.api.serializers import TodoListSerializers
+from django.contrib.auth.models import User
+from todo.api.serializers import TodoListSerializers, UserSerializers
 
 ### CLASS BASED ###
 class TodoListView(APIView):
@@ -45,6 +44,13 @@ class TodoListDetailView(APIView):
         todo = self.get_object(pk=pk)
         todo.delete()
         return Response(status= status.HTTP_204_NO_CONTENT)
+
+class UserListView(APIView):
+    def get(self ,request):
+        userlist = User.objects.all()
+        serializer = UserSerializers(userlist, many=True, context={'request': request})
+        return Response(serializer.data)
+
 
 
 # @api_view(['GET', 'PUT', 'DELETE'])

@@ -13,7 +13,14 @@ class TodoListSerializers(serializers.Serializer):
     updated_at = serializers.DateTimeField(read_only=True)
 
     def create(self, validated_data):
-        pass
+        return TodoList.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        pass
+        # instance.user = validated_data.get('user', instance.user)
+        
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.status = validated_data.get('status', instance.status)
+        instance.expected_end_date = validated_data.get('expected_end_date', instance.expected_end_date)
+        instance.save()
+        return instance

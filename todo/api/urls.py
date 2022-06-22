@@ -2,5 +2,6 @@ from django.contrib import admin
 from django.urls import path, include
 from todo.api import views as api_views
 urlpatterns = [
-    path('todo-list/', api_views.ToDoListView, name='todolist')
+    path('todo-list/', api_views.TodoListView.as_view(), name='todolist'),
+    path('todo-list/detail/<int:pk>', api_views.TodoListDetailView.as_view(), name='todolist_detail')
 ]

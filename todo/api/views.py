@@ -6,6 +6,7 @@ from rest_framework.generics import get_object_or_404
 from todo.models import TodoList
 from django.contrib.auth.models import User
 from todo.api.serializers import TodoListSerializers, UserSerializers
+from todo.api.pagination import SmallPagination, MediumPagination, LargePagination
 
 from rest_framework import generics
 from rest_framework import permissions
@@ -15,6 +16,7 @@ class TodoListView(generics.ListCreateAPIView):
     queryset = TodoList.objects.all()
     serializer_class = TodoListSerializers
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = MediumPagination
 
     def perform_create(self, serializer):
         current_user = self.request.user

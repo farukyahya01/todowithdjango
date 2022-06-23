@@ -5,4 +5,5 @@ urlpatterns = [
     path('todo-list/', api_views.TodoListView.as_view(), name='todolist'),
     path('todo-list/detail/<int:pk>', api_views.TodoListDetailView.as_view(), name='todolist_detail'),
     path('user-list/', api_views.UserListView.as_view(), name='userlist')
+    
 ]

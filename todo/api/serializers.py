@@ -8,10 +8,11 @@ from django.utils.timesince import timesince
 #THIS IS MODEL SERIALIZERS
 class TodoListSerializers(serializers.ModelSerializer):
     time_since_pub = serializers.SerializerMethodField()
+    todo_user = serializers.StringRelatedField(read_only=True) 
     class Meta:
         model = TodoList
         fields = '__all__'
-        read_only_fields = ['id' , 'created_at', 'updated_at']
+        read_only_fields = ['id', 'user', 'created_at', 'updated_at']
 
     def get_time_since_pub(self, object):
         now = datetime.now().astimezone()

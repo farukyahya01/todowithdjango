@@ -8,20 +8,31 @@ from django.contrib.auth.models import User
 from todo.api.serializers import TodoListSerializers, UserSerializers
 
 from rest_framework import generics
-
+from rest_framework import permissions
+from todo.api.permissions import IsTodoRecordOwner
 # CONCRETE VIEWS
-class TodoListView(generics.ListAPIView):
+class TodoListView(generics.ListCreateAPIView):    
     queryset = TodoList.objects.all()
     serializer_class = TodoListSerializers
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        current_user = self.request.user
+        serializer.save(user=current_user)
 
 class TodoListDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TodoList.objects.all()
     serializer_class = TodoListSerializers
+    permission_classes = [permissions.IsAuthenticated, IsTodoRecordOwner]
 
 
-class UserListView(generics.ListAPIView):
+class UserListView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializers
+    permission_classes = [permissions.IsAuthenticated]
+
+
+
 
 # GENERICS API VIEW
 # class TodoListView(ListModelMixin, CreateModelMixin, GenericAPIView):

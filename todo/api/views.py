@@ -7,34 +7,46 @@ from todo.models import TodoList
 from django.contrib.auth.models import User
 from todo.api.serializers import TodoListSerializers, UserSerializers
 
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework import generics
 
-
-# GENERICS API VIEW
-class TodoListView(ListModelMixin, CreateModelMixin, GenericAPIView):
-    
+# CONCRETE VIEWS
+class TodoListView(generics.ListAPIView):
     queryset = TodoList.objects.all()
     serializer_class = TodoListSerializers
 
-    def get(self, request , *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+class TodoListDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TodoList.objects.all()
+    serializer_class = TodoListSerializers
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
 
-class TodoListDetailView(GenericAPIView):
-    pass
-
-class UserListView(ListModelMixin, CreateModelMixin, GenericAPIView):
+class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializers
 
-    def get(self, request , *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+# GENERICS API VIEW
+# class TodoListView(ListModelMixin, CreateModelMixin, GenericAPIView):
+    
+#     queryset = TodoList.objects.all()
+#     serializer_class = TodoListSerializers
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+#     def get(self, request , *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+
+# class TodoListDetailView(GenericAPIView):
+#     pass
+
+# class UserListView(ListModelMixin, CreateModelMixin, GenericAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializers
+
+#     def get(self, request , *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
 
 ### CLASS BASED ###
 # class TodoListView(APIView):
